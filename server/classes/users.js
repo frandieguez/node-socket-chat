@@ -13,8 +13,6 @@ class Users {
 
     this.people.push(person);
 
-    console.log('Adding user to chat', this.people);
-
     return this.getPeopleByChat(chat);
   }
 

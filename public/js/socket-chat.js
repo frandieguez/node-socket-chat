@@ -20,6 +20,7 @@ socket.on('connect', function() {
 
   socket.emit('chat.enter', { user: user }, function(resp) {
     console.log('Chat enter: ', resp);
+    renderUsers(resp.people)
   });
 });
 
@@ -31,17 +32,12 @@ socket.on('disconnect', function() {
 // Handling chat people connected
 socket.on('people.list', function(message) {
   console.log('People list:', message);
+  renderUsers(message.people)
 })
 
 // Handling message reception
-socket.on('message.public', function(resp) {
-  console.log('Public message:', resp);
-});
-
 socket.on('message.chat', function(resp) {
-  console.log('In-Chat Message:', resp);
-});
-
-socket.on('message.private', function(message) {
-  console.log('Private message:', message);
+  console.log('Public message:', resp);
+  renderMessage(resp, false)
+  scrollBottom();
 });

@@ -19,7 +19,8 @@ io.on('connection', (client) => {
 
     let people = users.addPerson(client.id, data.user.name, data.user.chat);
 
-    client.broadcast.to(data.user.chat).emit('people.list', { people: users.getPeopleByChat(data.chat) })
+    client.broadcast.to(data.user.chat).emit('people.list', { people: users.getPeopleByChat(data.user.chat) });
+    client.broadcast.emit( 'message.chat', createMessage('admin', `${ data.user.name } has joined.`));
 
     callback({ people, client: client.id });
   })
@@ -30,7 +31,7 @@ io.on('connection', (client) => {
     console.log('Person disconnected', person)
 
     client.broadcast.emit(
-      'message.create',
+      'message.chat',
       createMessage('admin', `${ person.name } went away.`)
     );
   })
@@ -42,11 +43,15 @@ io.on('connection', (client) => {
     client.broadcast.emit('message.create', message);
   })
 
-  client.on('message.chat', (data) => {
+  client.on('message.chat', (data, callback) => {
     let person = users.getPerson(client.id);
     let message = createMessage(person.name, data.message);
 
-    client.broadcast.to(person.chat).emit('message.create', message);
+    console.log(message, person, users.getPeopleByChat(person.chat));
+
+    client.broadcast.to(person.chat).emit('message.chat', message);
+
+    callback(message);
   });
 
   client.on('message.private', (data) => {
