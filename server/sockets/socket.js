@@ -8,18 +8,18 @@ const users = new Users();
 io.on('connection', (client) => {
 
   client.on('chat.enter', (data, callback) => {
-    console.log(data);
-
-    if (!data.user.name) {
+    if (!data.user.name || ! data.user.chat ) {
       return callback({
         err: true,
         message: 'User not valid'
       })
     }
 
-    let people = users.addPerson(client.id, data.user.name);
+    client.join(data.user.chat);
 
-    client.broadcast.emit('people.list', { people: users.getPeople() })
+    let people = users.addPerson(client.id, data.user.name, data.user.chat);
+
+    client.broadcast.to(data.user.chat).emit('people.list', { people: users.getPeopleByChat(data.chat) })
 
     callback({ people, client: client.id });
   })
@@ -27,18 +27,27 @@ io.on('connection', (client) => {
   client.on('disconnect', () => {
     let person = users.kickoffPeople(client.id);
 
+    console.log('Person disconnected', person)
+
     client.broadcast.emit(
       'message.create',
       createMessage('admin', `${ person.name } went away.`)
     );
   })
 
-  client.on('message.create', (data) => {
+  client.on('message.public', (data) => {
     let person = users.getPerson(client.id);
     let message = createMessage(person.name, data.message);
 
     client.broadcast.emit('message.create', message);
   })
+
+  client.on('message.chat', (data) => {
+    let person = users.getPerson(client.id);
+    let message = createMessage(person.name, data.message);
+
+    client.broadcast.to(person.chat).emit('message.create', message);
+  });
 
   client.on('message.private', (data) => {
     let person = users.getPerson(client.id);

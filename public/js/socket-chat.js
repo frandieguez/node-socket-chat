@@ -2,42 +2,46 @@ var socket = io();
 
 var params = new URLSearchParams(window.location.search);
 
-if (!params.has('name')) {
+// Check user input
+if (!params.has('name')|| !params.has('chat')) {
   window.location = '/';
-  throw new Error('Name is required');
+
+  throw new Error('Name and chat is required');
 }
 
 var user = {
-  name: params.get('name')
+  name: params.get('name'),
+  chat: params.get('chat')
 }
 
+// Handling when connected to server
 socket.on('connect', function() {
-  console.log('Conectado al servidor');
+  console.log('Connected to server');
 
   socket.emit('chat.enter', { user: user }, function(resp) {
     console.log('Chat enter: ', resp);
   });
 });
 
-socket.on('message.create', function(resp) {
-  console.log(resp);
-})
-
-// escuchar
+// Handling when browser disconnects
 socket.on('disconnect', function() {
-  console.log('Perdimos conexión con el servidor');
+  console.log('Lost connection with server');
 });
 
-// Escuchar información
+// Handling chat people connected
 socket.on('people.list', function(message) {
-
-  console.log('Servidor:', message);
-
+  console.log('People list:', message);
 })
 
-// Escuchar información
+// Handling message reception
+socket.on('message.public', function(resp) {
+  console.log('Public message:', resp);
+});
+
+socket.on('message.chat', function(resp) {
+  console.log('In-Chat Message:', resp);
+});
+
 socket.on('message.private', function(message) {
-
   console.log('Private message:', message);
-
-})
+});

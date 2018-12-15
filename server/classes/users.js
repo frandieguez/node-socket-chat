@@ -4,20 +4,21 @@ class Users {
     this.people = [];
   }
 
-  addPerson(id, name) {
+  addPerson(id, name, chat) {
     let person = {
       id,
-      name
+      name,
+      chat
     }
 
     this.people.push(person);
 
-    console.log(this.people);
+    console.log('Adding user to chat', this.people);
 
-    return this.people;
+    return this.getPeopleByChat(chat);
   }
 
-  getPerson(id) {
+  getPerson( id ) {
     return this.people.filter(person => person.id == id)[0];
   }
 
@@ -26,7 +27,7 @@ class Users {
   }
 
   getPeopleByChat( chat ) {
-    // ...
+     return this.people.filter(person => person.chat == chat)
   }
 
   kickoffPeople(id) {
