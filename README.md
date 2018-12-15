@@ -1,8 +1,8 @@
-# Node REST API backed by express + JWT + MongoDB
-[![Maintainability](https://api.codeclimate.com/v1/badges/534b7dc52af7d2bee6da/maintainability)](https://codeclimate.com/github/frandieguez/node-rest-api/maintainability) 
-[![dependencies Status](https://david-dm.org/frandieguez/node-rest-api/status.svg)](https://david-dm.org/frandieguez/node-rest-api)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
+# Node Chat application based on Socket.io + Express
+[![Maintainability](https://api.codeclimate.com/v1/badges/534b7dc52af7d2bee6da/maintainability)](https://codeclimate.com/github/frandieguez/node-rest-api/maintainability)
+[![dependencies Status](https://david-dm.org/frandieguez/node-rest-api/status.svg)](https://david-dm.org/frandieguez/node-rest-api)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-This projects its just an example of creating a node.js api using different technologies
+This projects its just an example of creating a node.js chat application, take it as a lab project, nothing fancy.
 
 ## Getting Started
 
@@ -24,17 +24,11 @@ So after fulfill these requirements you just need to issue the next commands:
 cp .env.example .env
 vim .env # edit your parameters
 npm install
-docker-compose up -d
-npm run start-dev
+npm start
 ```
 
 Then you will be able to get information from http://localhost:3000
 
-## Running the tests
-
-```
-npm test
-```
 
 ## Deployment
 
@@ -42,9 +36,9 @@ There is a docker composer to ease the deployment in local machines.
 
 ## Built With
 
-- [JWT(https://jwt.io)] - JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.
 - [NodeJS(https://nodejs.org/) - Language and VM
 - [Express](https://expressjs.com/) - Node.js Express framework
+- [Socket.io](https://socket.io) - Library to changle web sockets
 
 ## Contributing
 
